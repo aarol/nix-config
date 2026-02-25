@@ -1,0 +1,14 @@
+# Git config files containing personal information
+.config/git/personal
+.config/git/aalto
+
+# Age private keys (never commit these!)
+*.txt
+keys.txt
+
+# Build results
+result
+result-*
+
+# macOS
+.DS_Store

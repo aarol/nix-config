@@ -8,8 +8,6 @@
 {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
-  home.username = "aarol";
-  home.homeDirectory = "/Users/aarol";
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
@@ -22,26 +20,34 @@
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-  home.packages =
-    with pkgs;
-    [
-      nixd
-      nil
-      difftastic
-      fzf
-      ripgrep
-      zoxide
-      zig
-      go
-      rustup
-      jetbrains-mono
-      just
-      nixfmt-rfc-style
-      fastfetch
-    ]
-    ++ (with pkgs-unstable; [
-      opencode
-    ]);
+  home.packages = [
+    pkgs.nixd
+    pkgs.nil
+    pkgs.difftastic
+    pkgs.fzf
+    pkgs.ripgrep
+    pkgs.zoxide
+    pkgs.go
+    pkgs.rustup
+    pkgs.jetbrains-mono
+    pkgs.just
+    pkgs.nixfmt-rfc-style
+    pkgs.fastfetch
+    pkgs.pnpm
+    pkgs.pv
+    pkgs.sl
+    pkgs.nodejs
+    pkgs.jj
+    pkgs.bat
+    pkgs.helix
+    pkgs.tokei
+
+    pkgs-unstable.hugo
+    pkgs-unstable.opencode
+    pkgs-unstable.zig
+    pkgs-unstable.zls
+    pkgs-unstable.bun
+  ];
   # # It is sometimes useful to fine-tune packages, for example, by applying
   # # overrides. You can do that directly here, just don't forget the
   # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
@@ -59,35 +65,6 @@
     enable = true;
     interactiveShellInit = ''
       zoxide init fish --cmd cd | source
-
-      set -gx PNPM_HOME "/Users/aarol/Library/pnpm"
-      if not string match -q -- $PNPM_HOME $PATH
-        set -gx PATH "$PNPM_HOME" $PATH
-      end
-
-      set -gx VCPKG_ROOT "$HOME/dev/vcpkg"
-
-      # Added by LM Studio CLI (lms)
-      set -gx PATH $PATH /Users/aarol/.lmstudio/bin
-      # End of LM Studio CLI section
-
-      # >>> JVM installed by coursier >>>
-      set -gx JAVA_HOME "/Users/aarol/Library/Caches/Coursier/arc/https/cdn.azul.com/zulu/bin/zulu21.44.17-ca-jdk21.0.8-macosx_aarch64.tar.gz/zulu21.44.17-ca-jdk21.0.8-macosx_aarch64"
-      # <<< JVM installed by coursier <<<
-
-
-      set -gx ANDROID_HOME /Users/aarol/Library/Android/sdk/
-
-      # >>> coursier install directory >>>
-      set -gx PATH "$PATH:/Users/aarol/Library/Application Support/Coursier/bin"
-      # <<< coursier install directory <<<
-
-      # bun
-      set --export BUN_INSTALL "$HOME/.bun"
-      set --export PATH $BUN_INSTALL/bin $PATH
-
-      # Added by Antigravity
-      fish_add_path /Users/aarol/.antigravity/antigravity/bin
 
       function fish_edit_config
           zed --wait ~/.config/fish/config.fish && source ~/.config/fish/config.fish
@@ -109,20 +86,14 @@
 
   programs.git = {
     enable = true;
-    userName = "aarol";
-    userEmail = "aarol@iki.fi";
     difftastic.enable = true;
 
     lfs.enable = true;
     includes = [
+      { path = "~/.config/git/personal"; }
       {
         condition = "gitdir:~/aalto/";
-        contents = {
-          user = {
-            name = "Aaro Luomanen";
-            email = "aaro.luomanen@aalto.fi";
-          };
-        };
+        path = "~/.config/git/aalto";
       }
     ];
     extraConfig = {
@@ -167,7 +138,6 @@
   #  /etc/profiles/per-user/aarol/etc/profile.d/hm-session-vars.sh
   #
   home.sessionVariables = {
-    EDITOR = "zed";
   };
 
   # Let Home Manager install and manage itself.
