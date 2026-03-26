@@ -63,6 +63,9 @@
 
   programs.fish = {
     enable = true;
+    shellInit = ''
+      fish_add_path "$PNPM_HOME"
+    '';
     interactiveShellInit = ''
       zoxide init fish --cmd cd | source
 
@@ -138,6 +141,7 @@
   #  /etc/profiles/per-user/aarol/etc/profile.d/hm-session-vars.sh
   #
   home.sessionVariables = {
+    PNPM_HOME = "${config.home.homeDirectory}/.local/share/pnpm";
   };
 
   # Let Home Manager install and manage itself.
